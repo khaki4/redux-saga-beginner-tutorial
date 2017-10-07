@@ -6,6 +6,12 @@ export default function counter(state = 0, action) {
       return (state % 2 !== 0) ? state + 1 : state
     case 'DECREMENT':
       return state - 1
+    case 'FETCH_SUCCEEDED':
+      console.log('success')
+      return state
+    case 'FETCH_FAILED':
+      console.log('fail')
+      return state
     default:
       return state
   }

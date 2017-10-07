@@ -2,7 +2,10 @@ import test from 'tape'
 
 import { put, call } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
-import { incrementAsync } from './sagas';
+import { incrementAsync, fetchData } from './sagas';
+import { getPosts } from "./APIs";
+
+const iterator = fetchData()
 
 test('incrementAsync Saga Test', (assert) => {
   const gen = incrementAsync()
@@ -21,6 +24,12 @@ test('incrementAsync Saga Test', (assert) => {
     gen.next(),
     { done: true, value: undefined },
     'incrementAsync Saga must be done'
+  )
+  
+  assert.deepEqual(
+    iterator.next().value,
+    call(getPosts),
+    "fetchProducts should yield an Effect call(getPosts)"
   )
   
   assert.end()
