@@ -18,7 +18,7 @@ const store = createStore(
 )
 sagaMiddleware.run(rootSaga)
 
-const action = type => store.dispatch({type})
+const action = (type, payload) => store.dispatch({type, payload})
 
 function render() {
   ReactDOM.render(
@@ -28,6 +28,9 @@ function render() {
       onDecrement={() => action('DECREMENT')}
       onIncrementAsync={() => {
         return action('INCREMENT_ASYNC')
+      }}
+      loadData={() => {
+        return action('FETCH_REQUESTED', 'SOME_URL')
       }}
     />,
     document.getElementById('root')

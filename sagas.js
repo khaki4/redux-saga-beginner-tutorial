@@ -1,12 +1,12 @@
 import { delay } from 'redux-saga';
 import { call, all, put, takeEvery, takeLatest} from 'redux-saga/effects';
+import { getPosts } from './APIs';
 
 // worker Saga: 비동기 증가 태스크를 수행할겁니다.
 export function* incrementAsync() {
   yield call(delay, 1000)
   yield put({ type: 'INCREMENT'})
 }
-
 // watcher Saga
 export function* watchIncrementAsync() {
   // 모든 'INCREMENT_ASYNC' action을 바라본다.
@@ -19,10 +19,26 @@ export function* helloSaga() {
   console.log('Hello Sagas!')
 }
 
+//worker
+export function* fetchData(action) {
+  try {
+    const data = yield call(getPosts, action.payload)
+    yield put({type: "FETCH_SUCCEEDED", data})
+  } catch (error) {
+    yield put({type: "FETCH_FAILED", error})
+  }
+}
+// watcher saga
+export function* watchFetchData() {
+  yield takeEvery('FETCH_REQUESTED', fetchData)
+}
+
+
 // 모든 Saga들을 한번에 시작하기 위한 단일 entry point 입니다.
 export default function* rootSaga() {
   yield all([
     helloSaga(),
-    watchIncrementAsync()
+    watchIncrementAsync(),
+    watchFetchData()
   ])
 }
