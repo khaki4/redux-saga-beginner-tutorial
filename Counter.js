@@ -1,9 +1,11 @@
 /*eslint-disable no-unused-vars */
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux';
+import { onIncrement, onIncrementAsync } from './reducers'
 
-const Counter = ({ value, onIncrement, onDecrement, onIncrementAsync, loadData }) =>
+const Counter = ({ value, onDecrement, onIncrementAsync, loadData, state, onIncrement }) =>
       <div>
-        <button onClick={onIncrementAsync}>
+        <button onClick={() => onIncrementAsync()}>
           Increment
         </button>
         {' '}
@@ -12,7 +14,7 @@ const Counter = ({ value, onIncrement, onDecrement, onIncrementAsync, loadData }
         </button>
         <hr />
         <div>
-          Clicked: {value} times
+          Clicked: {state} times
         </div>
         <button onClick={loadData}>
           Load Data
@@ -21,8 +23,12 @@ const Counter = ({ value, onIncrement, onDecrement, onIncrementAsync, loadData }
 
 Counter.propTypes = {
   value: PropTypes.number.isRequired,
-  onIncrement: PropTypes.func.isRequired,
   onDecrement: PropTypes.func.isRequired
 }
 
-export default Counter
+export default connect(
+  (state) => {
+    return ({state: state})
+  },
+  { onIncrement, onIncrementAsync }
+)(Counter)

@@ -1,3 +1,6 @@
+export const onIncrement = () => ({ type: 'INCREMENT' })
+export const onIncrementAsync = () => ({ type: 'INCREMENT_ASYNC'})
+
 export default function counter(state = 0, action) {
   switch (action.type) {
     case 'INCREMENT':
@@ -11,6 +14,9 @@ export default function counter(state = 0, action) {
       return state
     case 'FETCH_FAILED':
       console.log('fail')
+      return state
+      case 'SHOW_CONGRATULATION':
+      console.log('SHOW_CONGRATULATION')
       return state
     default:
       return state
